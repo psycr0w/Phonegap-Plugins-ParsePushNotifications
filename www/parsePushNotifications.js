@@ -12,6 +12,11 @@
 			exec(successCallback,errorCallback,pluginNativeName,'register',[options]);
 		},
 		
+		unregister : function(successCallback, errorCallback) {
+           
+			exec(successCallback,errorCallback,pluginNativeName,'unregister',[]);
+		},
+
 		getInstallationId : function(successCallback, errorCallback) {
                
 			exec(successCallback,errorCallback,pluginNativeName,'getInstallationId',[]);

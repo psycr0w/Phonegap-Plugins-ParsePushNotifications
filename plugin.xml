@@ -37,11 +37,16 @@
 		<framework src="StoreKit.framework" />
 		<framework src="MobileCoreServices.framework" />		
         <framework src="SystemConfiguration.framework" />
+        <framework src="CoreGraphics.framework" />
+        <framework src="libsqlite3.dylib" />
+        <framework src="Accounts.framework" />
+        <framework src="Social.framework" />
 		<framework src="src/ios/lib/Parse.framework" custom="true"/>
+		<framework src="src/ios/lib/Bolts.framework" custom="true"/>
 
     </platform>
 	
-    <platform name="android">
+	<platform name="android">
 
         <config-file target="config.xml" parent="/*">
 			<feature name="ParsePushNotificationPlugin">
@@ -68,7 +73,7 @@
 		    
 		    <activity android:name="com.stratogos.cordova.parsePushNotifications.PushHandlerActivity"/>
 
-		    <service android:name="com.stratogos.cordova.parsePushNotifications.GCMIntentService"/>
+		    <!-- <service android:name="com.stratogos.cordova.parsePushNotifications.GCMIntentService"/> -->
 		    <service android:name="com.parse.PushService" />
 
 		    <receiver android:name="com.parse.ParseBroadcastReceiver">
@@ -79,33 +84,39 @@
 		    </receiver>
 
 
-			<receiver android:name="com.stratogos.cordova.parsePushNotifications.GCMReceiver">
+			<!-- <receiver android:name="com.stratogos.cordova.parsePushNotifications.GCMReceiver">
 		    	<intent-filter>
 		        	<action android:name="com.google.android.c2dm.intent.RECEIVE" />
 		            <category android:name="$PACKAGE_NAME" />
 				</intent-filter>
 			</receiver>
 
-
+ -->
 		    <receiver android:name="com.parse.GcmBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND">
 				<intent-filter >
 		        	<action android:name="com.google.android.c2dm.intent.RECEIVE" />
 		            <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 		            <category android:name="$PACKAGE_NAME" />
 				</intent-filter>
+			</receiver>
+			
+			<receiver android:name="com.stratogos.cordova.parsePushNotifications.GCMReceiver" android:exported="false">
+			<intent-filter>
+				<action android:name="com.parse.push.intent.RECEIVE" />
+				<action android:name="com.parse.push.intent.OPEN" />
+				<action android:name="com.parse.push.intent.DELETE" />
+			</intent-filter>
 			</receiver>		    
 			
 		</config-file>
 
-		<source-file src="src/android/GCMIntentService.java" target-dir="src/com/stratogos/cordova/parsePushNotifications/" />
-		<source-file src="src/android/GCMReceiver.java" target-dir="src/com/stratogos/cordova/parsePushNotifications/" />
+<!-- 		<source-file src="src/android/GCMIntentService.java" target-dir="src/com/stratogos/cordova/parsePushNotifications/" />
+ -->		<source-file src="src/android/GCMReceiver.java" target-dir="src/com/stratogos/cordova/parsePushNotifications/" />
 		<source-file src="src/android/ParsePushNotificationPlugin.java" target-dir="src/com/stratogos/cordova/parsePushNotifications/" />
 		<source-file src="src/android/PushHandlerActivity.java" target-dir="src/com/stratogos/cordova/parsePushNotifications/" />
 		<source-file src="src/android/ParseApplication.java" target-dir="src/com/stratogos/cordova/parsePushNotifications/" />
 		<source-file src="src/android/lib/android/gcm.jar" target-dir="libs/" framework="true" />						
-		<source-file src="src/android/lib/parse/Parse-1.4.1.jar" target-dir="libs/" framework="true" />			
-    </platform>
-
-   
+		<source-file src="src/android/lib/Parse/bolts-android-1.2.0.jar" target-dir="libs/" framework="true" />
+		<source-file src="src/android/lib/Parse/Parse-1.9.1.jar" target-dir="libs/" framework="true" />    </platform>
 </plugin>
 	

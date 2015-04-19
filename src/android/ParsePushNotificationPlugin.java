@@ -47,6 +47,7 @@ public class ParsePushNotificationPlugin extends CordovaPlugin {
             // Parse.initialize(getApplicationContext(), params.optString("appId",""), params.optString("clientKey", ""));
             // PushService.setDefaultPushCallback(getApplicationContext() ,PushHandlerActivity.class);
             // ParseInstallation.getCurrentInstallation().saveInBackground();
+            gWebView = this.webView;
 
             callbackContext.success();
 
@@ -95,7 +96,8 @@ public class ParsePushNotificationPlugin extends CordovaPlugin {
 
             String channel = args.optString(0);
 
-            PushService.subscribe(getApplicationContext(),channel, PushHandlerActivity.class);
+            // PushService.subscribe(getApplicationContext(),channel, PushHandlerActivity.class);
+            ParsePush.subscribeInBackground(channel);
 
             callbackContext.success();
 
@@ -105,7 +107,9 @@ public class ParsePushNotificationPlugin extends CordovaPlugin {
 
             String channel = args.optString(0);
 
-            PushService.unsubscribe(getApplicationContext(), channel);
+            // PushService.unsubscribe(getApplicationContext(), channel);
+            ParsePush.unsubscribeInBackground(channel);
+
 
             callbackContext.success();
 
@@ -191,6 +195,7 @@ public class ParsePushNotificationPlugin extends CordovaPlugin {
     public void onDestroy() {
         super.onDestroy();
         gWebView = null;
+        canDeliverNotifications = false;
         isInForeground = false;
     }
 
@@ -204,6 +209,8 @@ public class ParsePushNotificationPlugin extends CordovaPlugin {
     public void onResume(boolean multitasking) {
         super.onResume(multitasking);
         isInForeground = true;
+        canDeliverNotifications = true;
+        this.flushCallbackQueue();
     }
 
     private void flushCallbackQueue(){
